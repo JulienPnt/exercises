@@ -82,9 +82,9 @@ Pour répondre au cas limites (2.), lors de son exécution, l'interruption parco
 
 # Plan d'implementation 
 
-- [ ] Environnement de dev
-- [ ] Implémentation d'une structure ring buffer avec tests unitaires
-- [ ] Choix et implémentation d'un algo de tri avec tests unitaires
-- [ ] Implémentation de set et remove timer avec tests unitaires
+- [x] Environnement de dev
+- [x] Implémentation d'une structure ring buffer
+- [ ] Choix et implémentation d'un algo de tri
+- [ ] Implémentation de set et remove timer
 - [ ] Implémentation de l'ISR
 - [ ] Implémentation d'une simulation (optionnel pour rigoler)
