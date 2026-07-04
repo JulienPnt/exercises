@@ -10,7 +10,7 @@ typedef struct _ring_buffer {
   uint32_t head;
   uint32_t tail;
   const uint32_t size;
-  const timer_t **buffer;
+  const rtimer_t **buffer;
 } ring_buffer;
 
 /* Check if ring buffer is empty.
@@ -25,13 +25,13 @@ bool is_ring_buffer_empty(const ring_buffer my_ring_buffer);
  */
 bool is_ring_buffer_full(const ring_buffer my_ring_buffer);
 
-/* Insert uint8_t value into ring buffer
+/* Insert timer_t* value into ring buffer
  * @rg ring_buffer into insert value
  * @rg value to insert
  * @return 0 in sucess 1 if buffer is full
  */
-uint8_t insert_uint8_t_into_ring_buffer(ring_buffer *my_ring_buffer,
-                                        const timer_t *value);
+uint8_t insert_timer_into_ring_buffer(ring_buffer *my_ring_buffer,
+                                      const rtimer_t *value);
 /* Delete first in entry into ring buffer
  * @rg ring_buffer into delete entry
  * @return 0 in sucess 1 if buffer is empty

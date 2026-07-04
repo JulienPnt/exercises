@@ -9,7 +9,7 @@ typedef struct _timer {
   uint32_t id;
   uint32_t trigger_timestamp;
   timer_cb callback;
-} timer_t;
+} rtimer_t;
 
-uint8_t *cast_timer_to_str(const timer_t my_timer, char *buffer);
+uint8_t *cast_timer_to_str(const rtimer_t my_timer, char *buffer);
 #endif
