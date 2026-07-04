@@ -4,11 +4,13 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "timer.h"
+
 typedef struct _ring_buffer {
   uint32_t head;
   uint32_t tail;
   const uint32_t size;
-  uint8_t *buffer;
+  const timer_t **buffer;
 } ring_buffer;
 
 /* Check if ring buffer is empty.
@@ -29,7 +31,7 @@ bool is_ring_buffer_full(const ring_buffer my_ring_buffer);
  * @return 0 in sucess 1 if buffer is full
  */
 uint8_t insert_uint8_t_into_ring_buffer(ring_buffer *my_ring_buffer,
-                                        const uint8_t value);
+                                        const timer_t *value);
 /* Delete first in entry into ring buffer
  * @rg ring_buffer into delete entry
  * @return 0 in sucess 1 if buffer is empty

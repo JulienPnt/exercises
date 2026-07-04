@@ -2,22 +2,27 @@
 #include <stdio.h>
 
 #include "ring_buffer.h"
+#include "timer.h"
 
 #define BUFFER_SIZE 10
 
 int main() {
 
-  uint8_t buffer[BUFFER_SIZE] = {0};
-  ring_buffer my_ring_buffer = {0, 0, BUFFER_SIZE, buffer};
+  const timer_t *my_timer_buffer[BUFFER_SIZE] = {0};
+  ring_buffer my_ring_buffer = {0, 0, BUFFER_SIZE, my_timer_buffer};
+
+  timer_t my_timer_1 = {1, 123456, NULL};
+  timer_t my_timer_2 = {1, 123456, NULL};
+
   display_ring_buffer(my_ring_buffer);
-  int i = 0;
-  for (i = 0; i < 10; i++) {
-    if (insert_uint8_t_into_ring_buffer(&my_ring_buffer, i)) {
-      printf("Is full !\n");
-    }
-  }
+  insert_uint8_t_into_ring_buffer(&my_ring_buffer, &my_timer_1);
+  display_ring_buffer(my_ring_buffer);
+  insert_uint8_t_into_ring_buffer(&my_ring_buffer, &my_timer_2);
   display_ring_buffer(my_ring_buffer);
   delete_into_ring_buffer(&my_ring_buffer);
   display_ring_buffer(my_ring_buffer);
+  delete_into_ring_buffer(&my_ring_buffer);
+  display_ring_buffer(my_ring_buffer);
+
   return 0;
 }

@@ -5,14 +5,17 @@ EXEC=main
 
 all: $(EXEC)
 
-main: build main.o ring_buffer.o
-	$(CC) -o build/main build/main.o build/ring_buffer.o $(LDFLAGS)
+main: build main.o ring_buffer.o timer.o
+	$(CC) -o build/main build/main.o build/ring_buffer.o build/timer.o $(LDFLAGS)
 
-main.o: src/main.c
+main.o: timer.o src/main.c
 	$(CC) -o build/main.o -c src/main.c $(CFLAGS)
 
-ring_buffer.o: src/ring_buffer.c
+ring_buffer.o: timer.o src/ring_buffer.c
 	$(CC) -o build/ring_buffer.o -c src/ring_buffer.c $(CFLAGS)
+
+timer.o: src/timer.c
+	$(CC) -o build/timer.o -c src/timer.c $(CFLAGS)
 
 build:
 	if ! [ -d build ]; then \
