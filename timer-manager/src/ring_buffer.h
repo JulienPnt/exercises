@@ -50,4 +50,7 @@ uint32_t get_ring_buffer_szx(const ring_buffer my_ring_buffer);
  */
 void display_ring_buffer(const ring_buffer my_ring_buffer);
 
+uint8_t delete_timer_into_ring_buffer(ring_buffer *my_ring_buffer,
+                                      const uint32_t target_id);
+
 #endif
