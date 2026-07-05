@@ -15,32 +15,43 @@ typedef struct _ring_buffer {
 
 /* Check if ring buffer is empty.
  * @rg ring_buffer to check
- * @return true if empty otherlese false
+ * @return boolean:
+ *  - == true  => empty
+ *  - == false => not(empty)
  */
 bool is_ring_buffer_empty(const ring_buffer my_ring_buffer);
 
 /* Check if ring buffer is empty.
  * @rg ring_buffer to check
- * @return true if full otherlese false
+ * @return boolean:
+ *  - == true  => full
+ *  - == false => not(full)
  */
+
 bool is_ring_buffer_full(const ring_buffer my_ring_buffer);
 
 /* Insert timer_t* value into ring buffer
- * @rg ring_buffer into insert value
+ * @rg ring_buffer's reference into insert value
  * @rg value to insert
- * @return 0 in sucess 1 if buffer is full
+ * @return uint8_t status:
+ *  - == 0 => OK
+ *  - == 1 => ring_buffer is full
  */
 uint8_t insert_timer_into_ring_buffer(ring_buffer *my_ring_buffer,
                                       const rtimer_t value);
-/* Delete first in entry into ring buffer
- * @rg ring_buffer into delete entry
- * @return 0 in sucess 1 if buffer is empty
+/* Delete ring_buffer's head
+ * @rg ring_buffer's reference into delete entry
+ * @return uint8_t status:
+ * - == 0 => OK
+ * - == 1 => ring_buffer is empty
  */
 uint8_t delete_into_ring_buffer(ring_buffer *my_ring_buffer);
 
-/* Delete first in entry into ring buffer
- * @rg ring_buffer into delete entry
- * @return 0 in sucess 1 if buffer is empty
+/* Copy and delete ring_buffer's
+ * @rg ring_buffer's reference into delete entry
+ * @return uint8_t status:
+ * - == 0 => OK
+ * - == 1 => ring_buffer is empty
  */
 uint8_t pop_from_ring_buffer(ring_buffer *my_ring_buffer, rtimer_t *my_timer);
 
@@ -57,7 +68,7 @@ uint32_t get_ring_buffer_szx(const ring_buffer my_ring_buffer);
 void display_ring_buffer(const ring_buffer my_ring_buffer);
 
 /* Delete a timer into a ring buffer
- * @rg ring_buffer where the timer must be removed
+ * @rg ring_buffer's reference where the timer must be removed
  * @rg target_id for the targeted timer
  * return 0 in case of sucess >0 in case of error
  *        1 -> ring buffer is emtpy
