@@ -43,6 +43,15 @@ uint8_t delete_into_ring_buffer(ring_buffer *my_ring_buffer) {
   return 0;
 }
 
+uint8_t pop_from_ring_buffer(ring_buffer *my_ring_buffer, rtimer_t *my_timer) {
+  my_timer->id = my_ring_buffer->buffer[my_ring_buffer->head].id;
+  my_timer->trigger_timestamp =
+      my_ring_buffer->buffer[my_ring_buffer->head].trigger_timestamp;
+  my_timer->callback = my_ring_buffer->buffer[my_ring_buffer->head].callback;
+  delete_into_ring_buffer(my_ring_buffer);
+  return 0;
+}
+
 static uint8_t is_target_on_the_head(ring_buffer *my_ring_buffer,
                                      const uint32_t target_index) {
   return target_index == my_ring_buffer->head;

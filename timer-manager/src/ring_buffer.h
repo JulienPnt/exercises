@@ -38,6 +38,12 @@ uint8_t insert_timer_into_ring_buffer(ring_buffer *my_ring_buffer,
  */
 uint8_t delete_into_ring_buffer(ring_buffer *my_ring_buffer);
 
+/* Delete first in entry into ring buffer
+ * @rg ring_buffer into delete entry
+ * @return 0 in sucess 1 if buffer is empty
+ */
+uint8_t pop_from_ring_buffer(ring_buffer *my_ring_buffer, rtimer_t *my_timer);
+
 /* Get ring buffer size
  * @rg ring_buffer to check
  * @return ring_buffer size
