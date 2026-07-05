@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /* #ifdef UNIT_TEST*/
 #include "unit_test.h"
@@ -25,6 +26,7 @@ uint8_t cast_array_to_str(const uint8_t *array, const size_t szx, char **str) {
 
 uint8_t setup_random_array(uint8_t *array, const size_t size,
                            const uint8_t max) {
+  srand(time(NULL));
   size_t i = 0;
   uint8_t rd_value = 0;
   for (i = 0; i < size; i++) {
