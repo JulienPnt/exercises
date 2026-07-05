@@ -53,15 +53,14 @@ void timer_ring_buffer_unit_test() {
 
   make_it_full(&my_ring_buffer, my_timers);
 
-  display_ring_buffer(my_ring_buffer);
-  delete_timer_into_ring_buffer(&my_ring_buffer, 0);
-  display_ring_buffer(my_ring_buffer);
-  delete_timer_into_ring_buffer(&my_ring_buffer, 8);
-  display_ring_buffer(my_ring_buffer);
-  delete_timer_into_ring_buffer(&my_ring_buffer, 4);
-  display_ring_buffer(my_ring_buffer);
+  assert(delete_timer_into_ring_buffer(&my_ring_buffer, 0) == 0);
+  assert(delete_timer_into_ring_buffer(&my_ring_buffer, 0) == 2);
+  assert(delete_timer_into_ring_buffer(&my_ring_buffer, 8) == 0);
+  assert(delete_timer_into_ring_buffer(&my_ring_buffer, 8) == 2);
+  assert(delete_timer_into_ring_buffer(&my_ring_buffer, 4) == 0);
+  assert(delete_timer_into_ring_buffer(&my_ring_buffer, 4) == 2);
   make_it_empty(&my_ring_buffer);
-  display_ring_buffer(my_ring_buffer);
+  assert(delete_timer_into_ring_buffer(&my_ring_buffer, 4) == 1);
 
   return;
 }

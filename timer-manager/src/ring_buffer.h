@@ -50,6 +50,13 @@ uint32_t get_ring_buffer_szx(const ring_buffer my_ring_buffer);
  */
 void display_ring_buffer(const ring_buffer my_ring_buffer);
 
+/* Delete a timer into a ring buffer
+ * @rg ring_buffer where the timer must be removed
+ * @rg target_id for the targeted timer
+ * return 0 in case of sucess >0 in case of error
+ *        1 -> ring buffer is emtpy
+ *        2 -> timer id does not exist into ring buffer
+ */
 uint8_t delete_timer_into_ring_buffer(ring_buffer *my_ring_buffer,
                                       const uint32_t target_id);
 

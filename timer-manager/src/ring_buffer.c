@@ -65,7 +65,6 @@ uint8_t delete_timer_into_ring_buffer(ring_buffer *my_ring_buffer,
 
   uint32_t target_index = 0;
   if (find_target_id(my_ring_buffer, target_id, &target_index)) {
-    printf("No timer->id = %u into ring_buffer", target_id);
     return 2;
   }
 
