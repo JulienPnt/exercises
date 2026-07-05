@@ -26,13 +26,14 @@ uint8_t insertion_sort(uint8_t *array, const size_t size) {
 }
 
 #define switch_value_rtimer(x, y)                                              \
-  const rtimer_t *tmp = x;                                                     \
-  x = y;                                                                       \
-  y = tmp;
-uint8_t insertion_sort_rtime(const rtimer_t **array, const size_t size) {
+  rtimer_t tmp = x;                                                            \
+  cpy_rtimer(x, y);                                                            \
+  cpy_rtimer(y, tmp)
+
+uint8_t insertion_sort_rtime(rtimer_t *array, const size_t size) {
   size_t i = 0;
   for (i = 1; i < size; i++) {
-    if (array[i - 1]->trigger_timestamp > array[i]->trigger_timestamp) {
+    if (array[i - 1].trigger_timestamp > array[i].trigger_timestamp) {
       switch_value_rtimer(array[i - 1], array[i]);
       restart_queue;
     }

@@ -29,8 +29,8 @@ static void make_it_full(ring_buffer *my_ring_buffer, rtimer_t my_timers[]) {
       my_ring_buffer->size - get_ring_buffer_szx(*my_ring_buffer) - 1;
   uint32_t i = 0;
   for (i = 0; i < to_add; i++)
-    assert(insert_timer_into_ring_buffer(my_ring_buffer, &my_timers[i]) == 0);
-  assert(insert_timer_into_ring_buffer(my_ring_buffer, &my_timers[i]) == 1);
+    assert(insert_timer_into_ring_buffer(my_ring_buffer, my_timers[i]) == 0);
+  assert(insert_timer_into_ring_buffer(my_ring_buffer, my_timers[i]) == 1);
 }
 
 static void make_it_empty(ring_buffer *my_ring_buffer) {
@@ -42,19 +42,19 @@ static void make_it_empty(ring_buffer *my_ring_buffer) {
 }
 
 void timer_ring_buffer_unit_test() {
-  const rtimer_t *my_timer_buffer[BUFFER_SIZE] = {0};
+  rtimer_t my_timer_buffer[BUFFER_SIZE] = {0};
   ring_buffer my_ring_buffer = {0, 0, BUFFER_SIZE, my_timer_buffer};
 
   rtimer_t my_timers[BUFFER_SIZE];
   setup_timers(my_timers);
   int i = 0;
   for (i = 0; i < 3; i++)
-    assert(insert_timer_into_ring_buffer(&my_ring_buffer, &my_timers[i]) == 0);
+    assert(insert_timer_into_ring_buffer(&my_ring_buffer, my_timers[i]) == 0);
   make_it_empty(&my_ring_buffer);
   make_it_full(&my_ring_buffer, my_timers);
   make_it_empty(&my_ring_buffer);
   for (i = 0; i < 7; i++)
-    assert(insert_timer_into_ring_buffer(&my_ring_buffer, &my_timers[i]) == 0);
+    assert(insert_timer_into_ring_buffer(&my_ring_buffer, my_timers[i]) == 0);
   make_it_empty(&my_ring_buffer);
 
   make_it_full(&my_ring_buffer, my_timers);
@@ -130,11 +130,11 @@ static int is_sorted(const uint8_t *array, const size_t size) {
  *  INSERTION SORT - overt timer ring_buffer
  */
 
-static int is_sorted_ring_buffer(const rtimer_t **array, const size_t size);
+static int is_sorted_ring_buffer(const rtimer_t *array, const size_t size);
 
 void insertion_sort_unit_test_ring_buffer() {
 
-  const rtimer_t *my_timer_buffer[BUFFER_SIZE] = {0};
+  rtimer_t my_timer_buffer[BUFFER_SIZE] = {0};
   ring_buffer my_ring_buffer = {0, 0, BUFFER_SIZE, my_timer_buffer};
 
   rtimer_t my_timers[BUFFER_SIZE];
@@ -148,7 +148,7 @@ void insertion_sort_unit_test_ring_buffer() {
   }
 }
 
-static int is_sorted_ring_buffer(const rtimer_t **array, const size_t size) {
+static int is_sorted_ring_buffer(const rtimer_t *array, const size_t size) {
 
   if (array == NULL) {
     return -1;
@@ -161,14 +161,13 @@ static int is_sorted_ring_buffer(const rtimer_t **array, const size_t size) {
   }
 
   size_t i = 0;
-  bool is_increasing =
-      array[1]->trigger_timestamp > array[0]->trigger_timestamp;
+  bool is_increasing = array[1].trigger_timestamp > array[0].trigger_timestamp;
   for (i = 1; i < size; i++) {
     if (is_increasing &&
-        array[i - 1]->trigger_timestamp > array[i]->trigger_timestamp) {
+        array[i - 1].trigger_timestamp > array[i].trigger_timestamp) {
       return false;
     } else if (!is_increasing &&
-               array[i - 1]->trigger_timestamp < array[i]->trigger_timestamp) {
+               array[i - 1].trigger_timestamp < array[i].trigger_timestamp) {
       return false;
     }
   }

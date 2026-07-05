@@ -12,4 +12,10 @@ typedef struct _timer {
 } rtimer_t;
 
 uint8_t *cast_timer_to_str(const rtimer_t my_timer, char *buffer);
+
+#define cpy_rtimer(x, y)                                                       \
+  x.id = y.id;                                                                 \
+  x.trigger_timestamp = y.trigger_timestamp;                                   \
+  x.callback = y.callback;
+
 #endif
