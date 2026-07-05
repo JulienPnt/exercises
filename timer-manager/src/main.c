@@ -23,7 +23,8 @@ ring_buffer my_ring_buffer = {0, 0, BUFFER_SIZE, my_timer_buffer};
 uint32_t read_current_time();
 
 /* Insert a timer into the timer manager
- *  @rg uint32_t timer duration in seconds
+ *  @rg uint32_t timer duration in seconds,
+ *  must be >= 1 seconds
  *  @rg timer_cb timer callback
  *  @id uint32_t timer id
  *  return uint8_t status:
@@ -73,6 +74,12 @@ static uint8_t execute_head_rtimer() {
          my_ring_buffer.buffer[my_ring_buffer.head].trigger_timestamp;
 }
 
+/* HW trigger start and stop trigger interrupt
+ * @return nothing
+ */
+static void hw_trigger_isr_start() { return; }
+static void hw_trigger_isr_stop() { return; }
+
 /* HW trigger interrupt function
  * 1. Pop and execute every peremted timer
  * 2. Update the next hw trigger
@@ -88,8 +95,20 @@ void hw_trigger_isr() {
   return;
 }
 
+static uint8_t _set_timer(const uint32_t duration, const timer_cb my_callback,
+                          uint32_t *id);
 uint8_t set_timer(const uint32_t duration, const timer_cb my_callback,
                   uint32_t *id) {
+
+  // To avoid conflict over the ring buffer
+  hw_trigger_isr_stop();
+  uint32_t ret = _set_timer(duration, my_callback, id);
+  hw_trigger_isr_start();
+  return ret;
+}
+
+static uint8_t _set_timer(const uint32_t duration, const timer_cb my_callback,
+                          uint32_t *id) {
   static uint32_t timer_id = 0;
   if (duration == 0) {
     return 1;
@@ -108,7 +127,16 @@ uint8_t set_timer(const uint32_t duration, const timer_cb my_callback,
   return 0;
 }
 
+static uint8_t _delete_timer(const uint32_t target_id);
 uint8_t delete_timer(const uint32_t target_id) {
+  // To avoid conflict over the ring buffer
+  hw_trigger_isr_stop();
+  uint32_t ret = _delete_timer(target_id);
+  hw_trigger_isr_start();
+  return ret;
+}
+
+static uint8_t _delete_timer(const uint32_t target_id) {
   if (delete_timer_into_ring_buffer(&my_ring_buffer, target_id)) {
     return 1;
   }
@@ -122,5 +150,7 @@ int main() {
   timer_ring_buffer_unit_test();
   insertion_sort_unit_test();
   insertion_sort_unit_test_ring_buffer();
+
+  hw_trigger_isr_start();
   return 0;
 }
