@@ -73,7 +73,7 @@ uint8_t delete_timer_into_ring_buffer(ring_buffer *my_ring_buffer,
     return 0;
   }
 
-  int i = 0;
+  uint32_t i = 0;
   for (i = target_index; i >= my_ring_buffer->head; i--) {
     my_ring_buffer->buffer[i % my_ring_buffer->size] =
         my_ring_buffer->buffer[(i - 1) % my_ring_buffer->size];

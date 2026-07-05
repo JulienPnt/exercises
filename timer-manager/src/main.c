@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "insertion_sort.h"
 /* #ifdef UNIT_TEST*/
 #include "unit_test.h"
 
@@ -24,8 +25,8 @@ uint8_t cast_array_to_str(const uint8_t *array, const size_t szx, char **str) {
   return 0;
 }
 
-uint8_t setup_random_array(uint8_t *array, const size_t size,
-                           const uint8_t max) {
+static uint8_t setup_random_array(uint8_t *array, const size_t size,
+                                  const uint8_t max) {
   srand(time(NULL));
   size_t i = 0;
   uint8_t rd_value = 0;
@@ -39,19 +40,7 @@ uint8_t setup_random_array(uint8_t *array, const size_t size,
 #define BUFFER_SIZE 10
 
 int main() {
-  /* #ifdef UNIT_TEST*/
-
   timer_ring_buffer_unit_test();
-  /* #endif */
-
-  uint8_t array[BUFFER_SIZE] = {0};
-  setup_random_array(array, BUFFER_SIZE, 20);
-  char *str = NULL;
-  cast_array_to_str(array, BUFFER_SIZE, &str);
-
-  printf("array = %s\n", str);
-  free(str);
-  str = NULL;
-
+  insertion_sort_unit_test();
   return 0;
 }

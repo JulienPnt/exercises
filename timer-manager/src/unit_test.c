@@ -1,3 +1,4 @@
+#include "insertion_sort.h"
 #include "ring_buffer.h"
 #include "timer.h"
 
@@ -6,6 +7,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+/*
+ * RING BUFFER
+ */
 #define BUFFER_SIZE 10
 static void setup_timers(rtimer_t *my_timers) {
   time_t current_time = time(NULL);
@@ -63,4 +67,59 @@ void timer_ring_buffer_unit_test() {
   assert(delete_timer_into_ring_buffer(&my_ring_buffer, 4) == 1);
 
   return;
+}
+
+/*
+ *  INSERTION SORT
+ */
+
+static uint8_t setup_random_array(uint8_t *array, const size_t size,
+                                  const uint8_t max);
+static int is_sorted(const uint8_t *array, const size_t size);
+
+void insertion_sort_unit_test() {
+
+  uint8_t array[BUFFER_SIZE] = {0};
+  int i = 0;
+  for (i = 0; i < 40; i++) {
+    setup_random_array(array, BUFFER_SIZE, 20);
+    insertion_sort(array, BUFFER_SIZE);
+    assert(is_sorted(array, BUFFER_SIZE) == 1);
+  }
+}
+
+static uint8_t setup_random_array(uint8_t *array, const size_t size,
+                                  const uint8_t max) {
+  srand(time(NULL));
+  size_t i = 0;
+  uint8_t rd_value = 0;
+  for (i = 0; i < size; i++) {
+    rd_value = rand() % (max + 1);
+    array[i] = rd_value;
+  }
+  return 0;
+}
+
+static int is_sorted(const uint8_t *array, const size_t size) {
+
+  if (array == NULL) {
+    return -1;
+  } else if (size == 0) {
+    return -2;
+  }
+
+  if (size == 1) {
+    return true;
+  }
+
+  size_t i = 0;
+  bool is_increasing = array[1] > array[0];
+  for (i = 1; i < size; i++) {
+    if (is_increasing && array[i - 1] > array[i]) {
+      return false;
+    } else if (!is_increasing && array[i - 1] < array[i]) {
+      return false;
+    }
+  }
+  return true;
 }
