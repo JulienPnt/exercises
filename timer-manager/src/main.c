@@ -63,11 +63,21 @@ static uint8_t update_hw_trigger() {
 timer_cb callback = NULL;
 uint32_t read_current_time() { return hw_clock; }
 
+/* Check if ring buffer contains timer to execute
+ *  @return status:
+ *  - == 0 => no
+ *  - == 1 => yes
+ */
 static uint8_t execute_head_rtimer() {
-  return hw_trigger ==
+  return read_current_time() ==
          my_ring_buffer.buffer[my_ring_buffer.head].trigger_timestamp;
 }
 
+/* HW trigger interrupt function
+ * 1. Pop and execute every peremted timer
+ * 2. Update the next hw trigger
+ * @return nothing
+ */
 void hw_trigger_isr() {
   rtimer_t my_timer = {0};
   while (execute_head_rtimer()) {
