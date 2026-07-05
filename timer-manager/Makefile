@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c17 -W -Wall -ansi
+CFLAGS=-std=c17 -W -Wall -ansi -g
 LDFLAGS=
 EXEC=main
 

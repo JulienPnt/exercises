@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "insertion_sort.h"
 /* #ifdef UNIT_TEST*/
 #include "unit_test.h"
 
@@ -42,5 +41,6 @@ static uint8_t setup_random_array(uint8_t *array, const size_t size,
 int main() {
   timer_ring_buffer_unit_test();
   insertion_sort_unit_test();
+  insertion_sort_unit_test_ring_buffer();
   return 0;
 }
