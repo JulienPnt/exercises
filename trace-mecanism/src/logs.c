@@ -61,6 +61,7 @@ static uint8_t insert_log_into_ring_buffer(ring_buffer *my_ring_buffer,
 static void display_ring_buffer(const ring_buffer my_ring_buffer);
 
 static uint8_t check_log_size(const log my_log);
+static uint8_t check_ascii(const log my_log);
 uint8_t write_log(const char *module_name, const level level,
                   const char *filename, const uint32_t line,
                   const char *function_name, const char *msg) {
@@ -76,6 +77,8 @@ uint8_t write_log(const char *module_name, const level level,
   uint8_t status = 0;
   if ((status = check_log_size(my_log))) {
     return status + 1;
+  } else if ((status = check_ascii(my_log))) {
+    return status + 5;
   }
   status = insert_log_into_ring_buffer(&my_logs, my_log);
   id++;
@@ -91,6 +94,32 @@ static uint8_t check_log_size(const log my_log) {
     return 3;
   } else if (strlen(my_log.msg) > MSG_MAX_SZX) {
     return 4;
+  }
+  return 0;
+}
+
+static uint8_t _check_ascii(const char *str);
+static uint8_t check_ascii(const log my_log) {
+  if (_check_ascii(my_log.module_name)) {
+    return 1;
+  } else if (_check_ascii(my_log.filename)) {
+    return 2;
+  } else if (_check_ascii(my_log.function_name)) {
+    return 3;
+  } else if (_check_ascii(my_log.msg)) {
+    return 4;
+  }
+  return 0;
+}
+
+#define is_ascii(c) (((c) & ~0x7f) == 0) /* If C is a 7 bit value.  */
+
+static uint8_t _check_ascii(const char *str) {
+  size_t i = 0;
+  for (i = 0; i < strlen(str); i++) {
+    if (!is_ascii(str[i])) {
+      return 1;
+    }
   }
   return 0;
 }
