@@ -28,11 +28,11 @@ void read_log();
 
 #ifdef MODULE_ID
 #define error(msg)                                                             \
-  write_log(MODULE_ID, ERR, __FILE_NAME__, __LINE__, __FUNCTION__, msg);
+  write_log(MODULE_ID, ERR, __FILE_NAME__, __LINE__, __FUNCTION__, msg)
 #define warning(msg)                                                           \
-  write_log(MODULE_ID, WRN, __FILE_NAME__, __LINE__, __FUNCTION__, msg);
+  write_log(MODULE_ID, WRN, __FILE_NAME__, __LINE__, __FUNCTION__, msg)
 #define info(msg)                                                              \
-  write_log(MODULE_ID, INF, __FILE_NAME__, __LINE__, __FUNCTION__, msg);
+  write_log(MODULE_ID, INF, __FILE_NAME__, __LINE__, __FUNCTION__, msg)
 #define dbg(msg)                                                               \
-  write_log(MODULE_ID, DBG, __FILE_NAME__, __LINE__, __FUNCTION__, msg);
+  write_log(MODULE_ID, DBG, __FILE_NAME__, __LINE__, __FUNCTION__, msg)
 #endif

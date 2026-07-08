@@ -67,7 +67,7 @@ uint8_t write_log(const char *module_name, const level level,
 
   if (module_name == NULL || filename == NULL || function_name == NULL ||
       msg == NULL) {
-    return -1;
+    return 1;
   }
   static uint32_t id = 0;
   time_t now = time(NULL);
@@ -75,7 +75,7 @@ uint8_t write_log(const char *module_name, const level level,
                 filename, line, function_name, msg};
   uint8_t status = 0;
   if ((status = check_log_size(my_log))) {
-    return status;
+    return status + 1;
   }
   status = insert_log_into_ring_buffer(&my_logs, my_log);
   id++;
@@ -83,13 +83,13 @@ uint8_t write_log(const char *module_name, const level level,
 }
 
 static uint8_t check_log_size(const log my_log) {
-  if (sizeof(my_log.module_name) > MODULE_NAME_MAX_SZX) {
+  if (strlen(my_log.module_name) > MODULE_NAME_MAX_SZX) {
     return 1;
-  } else if (sizeof(my_log.function_name) > FUNCTION_NAME_MAX_SZX) {
+  } else if (strlen(my_log.filename) > FILE_NAME_MAX_SZX) {
     return 2;
-  } else if (sizeof(my_log.filename) > FILENAME_MAX) {
+  } else if (strlen(my_log.function_name) > FUNCTION_NAME_MAX_SZX) {
     return 3;
-  } else if (sizeof(my_log.msg) > MSG_MAX_SZX) {
+  } else if (strlen(my_log.msg) > MSG_MAX_SZX) {
     return 4;
   }
   return 0;
